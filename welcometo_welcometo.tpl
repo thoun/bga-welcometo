@@ -207,59 +207,6 @@ var jstpl_currentPlayerBoard = `
 `;
 
 
-////// OVERVIEW ///////
-var jstpl_overview = `
-<table id='players-overview'>
-  <thead>
-    <tr>
-      <th id="overview-user"><i class="fa fa-user"></i></th>
-      <th id="overview-houses"><div></div></th>
-      <th id="overview-plan-1">n°1</th>
-      <th id="overview-plan-2">n°2</th>
-      <th id="overview-plan-3">n°3</th>
-      <th id="overview-park" colspan="3"><div></div></th>
-      <th id="overview-pool"><div></div></th>
-      <th id="overview-temp"><div>*</div></th>
-      <th id="overview-estates"><div></div></th>
-      <th id="overview-bis"><div></div></th>
-      <th id="overview-other"><div></div></th>
-      <th id="overview-total"><i class="fa fa-star"></i></th>
-    </tr>
-  </thead>
-  <tbody id="player-overview-body"></tbody>
-</table>
-`;
-
-
-var jstpl_overviewRow = `
-<tr>
-  <td>\${playerName}</td>
-  <td class="overview-house"><span>\${houses}</span> / <span>33</span></td>
-  <td>\${plan0}</td>
-  <td>\${plan1}</td>
-  <td>\${plan2}</td>
-  <td>\${park1}<i class="fa fa-star"></i></td>
-  <td>\${park2}<i class="fa fa-star"></i></td>
-  <td>\${park3}<i class="fa fa-star"></i></td>
-  <td>\${pool}<i class="fa fa-star"></i></td>
-  <td class="overview-temp">
-    <div>\${tempNumber}
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.378898 45.777344">
-        <path style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 11.43164,0 -1.0625,5.216797 -10.04297,0.0957 0.19336,7.822266 H 8.53515 L 7.375,18.658201 H 0 l 0.27148,7.648437 h 5.60157 l -3.2793,18.710937 5.45703,0.759766 3.86328,-19.314453 28.29688,0.193359 3.76757,19.121094 5.31055,-0.964844 -3.57227,-18.447265 6.66211,-0.0957 V 18.640625 H 44.26758 L 43.01172,13.039063 H 52.3789 V 5.119141 l -10.62304,0.09766 -0.96485,-4.830078 -5.50586,0.869141 0.86914,3.863281 -20.47265,0.09766 0.77148,-4.154297 z m 26.17187,12.845704 1.0625,5.214843 -25.30273,0.289063 1.1582,-5.408203 z"
-           id="path817"
-           inkscape:connector-curvature="0" />
-      </svg>
-    </div>
-    <div>\${tempScore}<i class="fa fa-star"></i></div>
-  </td>
-  <td>\${estates}<i class="fa fa-star"></i></td>
-  <td>\${bis}<i class="fa fa-star"></i></td>
-  <td>\${permitScore}<i class="fa fa-star"></i> (\${permitNumber}) </td>
-  <td>\${total}</td>
-</tr>
-`;
-
 /////////////////////
 ////// CARDS  ///////
 /////////////////////
@@ -334,6 +281,8 @@ var jstpl_pool = `<div id="\${pId}_pool_\${x}_\${y}" data-x="\${x}" data-y="\${y
     </clipPath>
   </svg>
 </div>`;
+var jstpl_iceCream = `<div id="\${pId}_ice-cream_\${x}_\${y}" data-x="\${x}" data-y="\${y}" class="ice-cream"></div>`;
+var jstpl_iceTruck = '<div id="${pId}_ice-truck_${x}_${y}" data-x="${x}" data-y="${y}" class="ice-truck"></div>';
 
 var jstpl_houseNumber = '<div class="house-number" data-turn="${turn}">${number}${bis}</div>';
 var jstpl_estate = `
@@ -428,6 +377,19 @@ var jstpl_scribbleRoundabout = `
 </svg>
 `;
 
-</script>
 
+var jstpl_scribbleChristmas = `
+<svg id="scribble-\${id}" style="left:\${left}px; top:\${top}px; position:absolute; width:\${width}px; height:\${height}px" width="\${width}" height="\${height}" class="scribble-christmas" data-turn="\${turn}" viewBox="0 0 \${width} \${height}" xmlns="http://www.w3.org/2000/svg">
+  <path class="scribble-path" d="M 10 \${start} a 2 1 \${rotation} 0 0 \${arcWidth} \${end}" stroke="black" fill="transparent" stroke-width="5" />
+</svg>
+`;
+
+var jstpl_scribbleEgg = `
+<svg id="scribble-\${id}" style="left:\${left}px; top:\${top}px;" class="scribble-egg" data-turn="\${turn}" data-n="\${n}" viewBox="0 0 834.16949 480" xmlns="http://www.w3.org/2000/svg">
+  <path class="scribble-path" d="M 192,0 C 86,0 0,182 0,288 0,394 85.1,480 192,480 297.1,480 384,394.9 384,288 384,182 297.1,0 192,0 Z M 160.1,122 C 128.6,161.1 96,233.8 96,288 c 0,8.8 -7.16,16 -16,16 -8.84,0 -16,-7.2 -16,-16 0,-63.56 36.7,-143.3 71.22,-186 5.562,-6.906003 15.64,-7.969003 22.5,-2.406003 C 164.6,105.1 165.7,115.2 160.1,122 Z" />
+  <path class="scribble-path" d="m 642.16949,3e-6 c -106,0 -192,181.999997 -192,287.999997 0,106 85.1,192 192,192 105.1,0 192,-85.1 192,-192 0,-106 -86.9,-287.999997 -192,-287.999997 z m -31.9,122.000007 c -31.5,39.1 -64.1,111.79999 -64.1,165.99999 0,8.8 -7.16,16 -16,16 -8.84,0 -16,-7.2 -16,-16 0,-63.56 36.7,-143.29999 71.22,-185.99999 5.562,-6.906003 15.64,-7.969003 22.5,-2.406003 6.88,5.506003 7.98,15.606003 2.38,22.406003 z" />
+</svg>
+`;
+
+</script>
 {OVERALL_GAME_FOOTER}

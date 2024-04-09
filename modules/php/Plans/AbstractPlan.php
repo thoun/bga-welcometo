@@ -1,10 +1,10 @@
 <?php
 namespace WTO\Plans;
-use \WTO\Game\Globals;
-use \WTO\Game\Players;
-use \WTO\Game\Notifications;
-use \WTO\Game\UserException;
-use \WTO\Helpers\QueryBuilder;
+use WTO\Game\Globals;
+use WTO\Game\Players;
+use WTO\Game\Notifications;
+use WTO\Game\UserException;
+use WTO\Helpers\QueryBuilder;
 use welcometo;
 
 // TODO : remove
@@ -19,28 +19,49 @@ abstract class AbstractPlan extends \APP_DbObject
   protected $conditions;
   protected $automatic = false;
 
-  public function __construct($info, $card = null){
+  public function __construct($info, $card = null)
+  {
     $this->variant = $info[0];
     $this->stack = $info[1];
     $this->scores = $info[2];
     $this->conditions = $info[4];
 
-    if(is_null($card))
+    if (is_null($card)) {
       return;
+    }
     $this->id = $card['id'];
   }
 
-  public function getUiData(){
+  public function getUiData()
+  {
     return [
       'id' => $this->id,
       'desc' => $this->desc,
     ];
   }
 
-  public function getId(){ return $this->id; }
-  public function getStack(){ return $this->stack; }
-  public function isAvailable(){
-    return $this->variant == BASIC || Globals::isAdvanced();
+  public function getId()
+  {
+    return $this->id;
+  }
+  public function getStack()
+  {
+    return $this->stack;
+  }
+  public function isAvailable()
+  {
+    $check = $this->variant != ADVANCED || Globals::isAdvanced();
+    if (Globals::isIceCream()) {
+      $check = $check && ($this->stack != 3 || $this->variant == ICE_CREAM);
+    } elseif (Globals::isChristmas()) {
+      $check = $check && ($this->stack != 3 || $this->variant == CHRISTMAS);
+    } elseif (Globals::isEaster()) {
+      $check = $check && ($this->stack != 3 || $this->variant == EASTER);
+    } else {
+      $check = $check && $this->variant != ICE_CREAM && $this->variant != CHRISTMAS && $this->variant != EASTER;
+    }
+
+    return $check;
   }
 
   public function canBeScored($player)
@@ -54,12 +75,13 @@ abstract class AbstractPlan extends \APP_DbObject
     return $this->automatic;
   }
 
-
-  public function argValidate($player){
+  public function argValidate($player)
+  {
     return [];
   }
 
-  public function validate($player, $args){
+  public function validate($player, $args)
+  {
     $query = new QueryBuilder('plan_validation');
     $query->insert([
       'card_id' => $this->id,
@@ -69,13 +91,13 @@ abstract class AbstractPlan extends \APP_DbObject
     Notifications::planScored($player, $this, $this->getValidations());
   }
 
-  public function askForReshuffle($player){
+  public function askForReshuffle($player)
+  {
     $query = new QueryBuilder('plan_validation');
-    $query->update(['reshuffle' => true])->where([
-      ['card_id', $this->id],
-      ['player_id', $player->getId()],
-      ['turn', Globals::getCurrentTurn()],
-    ])->run();
+    $query
+      ->update(['reshuffle' => true])
+      ->where([['card_id', $this->id], ['player_id', $player->getId()], ['turn', Globals::getCurrentTurn()]])
+      ->run();
   }
 
   public function getValidations()
@@ -85,10 +107,11 @@ abstract class AbstractPlan extends \APP_DbObject
 
     $validations = $query->get(false);
     $turns = [];
-    foreach($validations as $validation){
+    foreach ($validations as $validation) {
       // Filter out the validations of current turn if not current player
-      if($validation['player_id'] != Players::getCurrentId() && $validation['turn'] == Globals::getCurrentTurn())
+      if ($validation['player_id'] != Players::getCurrentId() && $validation['turn'] == Globals::getCurrentTurn()) {
         continue;
+      }
 
       $turns[$validation['player_id']] = $validation['turn'];
     }
@@ -96,10 +119,11 @@ abstract class AbstractPlan extends \APP_DbObject
     asort($turns);
     $firstValue = null;
     $validations = [];
-    foreach($turns as $pId => $turn){
-      if(is_null($firstValue))
+    foreach ($turns as $pId => $turn) {
+      if (is_null($firstValue)) {
         $firstValue = $turn;
-      $validations[$pId] = ["rank" => $turn == $firstValue? 0 : 1, "turn" => $turn];
+      }
+      $validations[$pId] = ['rank' => $turn == $firstValue ? 0 : 1, 'turn' => $turn];
     }
 
     return $validations;
@@ -109,8 +133,8 @@ abstract class AbstractPlan extends \APP_DbObject
   {
     $validations = self::getValidations();
     $scores = [];
-    foreach($validations as $pId => $val){
-      $scores[$pId] = $this->scores[$val["rank"]];
+    foreach ($validations as $pId => $val) {
+      $scores[$pId] = $this->scores[$val['rank']];
     }
 
     return $scores;

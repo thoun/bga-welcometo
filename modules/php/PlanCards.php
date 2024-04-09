@@ -62,6 +62,18 @@ class PlanCards extends Helpers\Pieces
     [ADVANCED, 2, [7, 4], 'Decorative', ['pool'] ],
     [ADVANCED, 2, [10, 5], 'Decorative', ['pool&park', 2] ],
     [ADVANCED, 2, [8, 3], 'Decorative', ['pool&park', 1] ],
+
+    [ICE_CREAM, 3, [6, 4], 'Decorative', ['iceCream'] ],
+    [ICE_CREAM, 3, [7, 3], 'EstateIceCream', ['without', 3, 4, 5] ],
+    [ICE_CREAM, 3, [8, 4], 'EstateIceCream', ['with', 4, 4, 4] ],
+
+    [CHRISTMAS, 3, [10, 5], 'EstateChristmas', ['with', 6, 6] ],
+    [CHRISTMAS, 3, [14, 7], 'Decorative', ['christmas'] ],
+    [CHRISTMAS, 3, [10, 5], 'EstateChristmas', ['without', 3, 3] ],
+
+    [EASTER, 3, [7, 3], 'Decorative', ['easterEgg'] ],
+    [EASTER, 3, [10, 5], 'EstateEasterEgg', ['without', 2, 3, 4] ],
+    [EASTER, 3, [8, 4], 'EstateEasterEgg', ['with', 3, 3, 3] ],
   ];
 
 
