@@ -11,9 +11,6 @@
 
 $gameinfos = [
   'game_name' => "Welcome To",
-  'designer' => 'Benoit Turpin',
-  'artist' => 'Anne Heidsieck',
-  'year' => 2018,
   'publisher' => 'Blue Cocker Games',
   'publisher_website' => 'http://www.bluecocker.com/',
   'publisher_bgg_id' => 26604,
@@ -35,34 +32,12 @@ $gameinfos = [
   'is_beta' => 1,
   'is_coop' => 0,
 
-  'complexity' => 2,
-  'luck' => 1,
-  'strategy' => 4,
-  'diplomacy' => 1,
-
   'player_colors' => ["ff0000", "008000", "0000ff", "ffa500", "773300"],
   'favorite_colors_support' => true,
   'disable_player_order_swap_on_rematch' => false,
 
   'game_interface_width' => [
     'min' => 740,
-    'max' => null
+    'autoscale' => false
   ],
-
-  'presentation' => [
-    totranslate("As an American architect in the 50s, during the Baby Boom, you are tasked to create the nicest housing estates, with luxurious parks and fancy pools."),
-    totranslate("But beware of the competition! Will you be able to become the greatest architect?")
-  ],
-
-  'tags' => [2, 11, 106],
-
-
-//////// BGA SANDBOX ONLY PARAMETERS (DO NOT MODIFY)
-
-// simple : A plays, B plays, C plays, A plays, B plays, ...
-// circuit : A plays and choose the next player C, C plays and choose the next player D, ...
-// complex : A+B+C plays and says that the next player is A+B
-  'is_sandbox' => false,
-  'turnControl' => 'complex'
-////////
 ];
