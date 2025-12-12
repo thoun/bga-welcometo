@@ -9,7 +9,6 @@ define([
   'dojo',
   'dojo/_base/declare',
   'dojo/fx',
-  'ebg/core/gamegui',
   g_gamethemeurl + 'modules/js/Game/modal.js',
   g_gamethemeurl + 'modules/js/vendor/hammer.min.js',
 ], function (dojo, declare) {
@@ -18,7 +17,7 @@ define([
   const CHRISTMAS = 2;
   const EASTER = 3;
 
-  return declare('welcometo.scoreSheet', ebg.core.gamegui, {
+  return declare('welcometo.scoreSheet', null, {
     /****************************************
      ********** Score sheet class ************
      *****************************************
@@ -153,7 +152,7 @@ define([
     tpl(tplName, data, container, clickCallback) {
       data.pId = this.pId;
       container = container || this.container;
-      var elem = dojo.place(this.format_block('jstpl_' + tplName, data), container);
+      var elem = dojo.place(globalThis.gameui.format_block('jstpl_' + tplName, data), container);
       if (clickCallback && !this.slideshow) {
         dojo.connect(elem, 'click', () => clickCallback(data));
       }
@@ -664,11 +663,11 @@ define([
      * Add a blue/grey button if it doesn't already exists
      */
     addPrimaryActionButton(id, text, callback) {
-      if (!$(id)) this.addActionButton(id, text, callback, 'customActions', false, 'blue');
+      if (!$(id)) globalThis.gameui.addActionButton(id, text, callback, 'customActions', false, 'blue');
     },
 
     addSecondaryActionButton(id, text, callback) {
-      if (!$(id)) this.addActionButton(id, text, callback, 'customActions', false, 'gray');
+      if (!$(id)) globalThis.gameui.addActionButton(id, text, callback, 'customActions', false, 'gray');
     },
 
     /******************************
@@ -793,7 +792,7 @@ define([
     },
 
     addPin(pin) {
-      var pinDiv = dojo.place(this.format_block('jstpl_pin', pin), 'score-sheet-' + this.id + '-' + this.pId);
+      var pinDiv = dojo.place(globalThis.gameui.format_block('jstpl_pin', pin), 'score-sheet-' + this.id + '-' + this.pId);
       dojo.style(
         pinDiv.querySelector('.pin-avatar'),
         'background-image',

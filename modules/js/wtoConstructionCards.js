@@ -1,10 +1,10 @@
 var isDebug = window.location.host == 'studio.boardgamearena.com' || window.location.hash.indexOf('debug') > -1;
 var debug = isDebug ? console.info.bind(window.console) : function () { };
 
-define(["dojo", "dojo/_base/declare","ebg/core/gamegui",], function (dojo, declare) {
+define(["dojo", "dojo/_base/declare",], function (dojo, declare) {
   const marks = [0, 1, 5, 0, 0, 2, 0, 3, 6, 0, 7, 1, 0, 4, 0, 2, 0, 0, 3, 0, 5, 0, 0, 1, 4, 7, 0, 6, 2, 0, 3, 5, 0, 2, 1, 5, 0, 0, 2, 0, 3, 6, 0, 7];
 
-  return declare("welcometo.constructionCards", ebg.core.gamegui, {
+  return declare("welcometo.constructionCards", null, {
 /****************************************
 ******* Constructions cards class *******
 *****************************************
@@ -25,7 +25,7 @@ define(["dojo", "dojo/_base/declare","ebg/core/gamegui",], function (dojo, decla
       gamedatas.constructionCards.forEach((stack, i) => {
         stack.forEach((card,j) => {
           card.mark = i == markedStack && j == 0? marks[gamedatas.turn] : 0;
-          dojo.place(this.format_block('jstpl_constructionCard', card), 'construction-cards-stack-' + i);
+          dojo.place(globalThis.gameui.format_block('jstpl_constructionCard', card), 'construction-cards-stack-' + i);
           dojo.style("construction-card-" + card.id, "z-index", 100);
           if(j == 0 && this._isStandard){ // Flip first card
             this.flipCard("construction-card-" + card.id, 1);
@@ -75,7 +75,7 @@ define(["dojo", "dojo/_base/declare","ebg/core/gamegui",], function (dojo, decla
           _("Allow you to add or substract 1 or 2 to the house number, and cross one box from the Temp Agency column (majority scoring)"),
           _("Allow you to write a second house number by duplicating an already existing number next to it. Cross one space in the 'bis' column (negative scoring)")
         ];
-        this.addTooltip(card, tooltipContent[action], "");
+        globalThis.gameui.addTooltip(card, tooltipContent[action], "");
       }, 1000);
     },
 
@@ -150,7 +150,7 @@ define(["dojo", "dojo/_base/declare","ebg/core/gamegui",], function (dojo, decla
           // New card
           if($("construction-card-" + card.id))
             dojo.destroy("construction-card-" + card.id);
-          var newCard = dojo.place(this.format_block('jstpl_constructionCard', card), 'construction-cards-stack-' + card.stackId);
+          var newCard = dojo.place(globalThis.gameui.format_block('jstpl_constructionCard', card), 'construction-cards-stack-' + card.stackId);
           dojo.style("construction-card-" + card.id, "z-index", 100 - turn);
 
           // First card in this stack ? => slide from left
@@ -171,7 +171,7 @@ define(["dojo", "dojo/_base/declare","ebg/core/gamegui",], function (dojo, decla
             dojo.removeClass(stack, 'notransition');
 
             // Create a new card and put it to the left (hidden)
-            var newCard = dojo.place(this.format_block('jstpl_constructionCard', card), stack);
+            var newCard = dojo.place(globalThis.gameui.format_block('jstpl_constructionCard', card), stack);
             dojo.style(newCard, "z-index", 100 - turn);
             this.slideFromLeft(newCard);
           }, 800);
@@ -213,7 +213,7 @@ define(["dojo", "dojo/_base/declare","ebg/core/gamegui",], function (dojo, decla
     giveCard(stack, pId){
       let oldCard = dojo.query("#construction-cards-stack-" + stack + " .construction-card-holder:last-of-type")[0];
       dojo.addClass(oldCard, 'notransition')
-      this.slideToObjectAndDestroy(oldCard, "overall_player_board_" + pId, 1000);
+      globalThis.gameui.slideToObjectAndDestroy(oldCard, "overall_player_board_" + pId, 1000);
     },
 
 
@@ -236,7 +236,7 @@ define(["dojo", "dojo/_base/declare","ebg/core/gamegui",], function (dojo, decla
         this._selectedStackForNonStandard = stackId;
         // Compute new possible choices for stacks
         this.makeStacksSelectable(this.getSelectableSecondStacks(stackId), true);
-        this.addActionButton('buttonUnselect', _('Unselect'), () => this.unselectFirstStack(), null, false, 'gray');
+        globalThis.gameui.addActionButton('buttonUnselect', _('Unselect'), () => this.unselectFirstStack(), null, false, 'gray');
         dojo.addClass("construction-cards-stack-" + stackId, "selected");
       }
 
